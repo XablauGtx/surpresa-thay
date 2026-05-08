@@ -95,25 +95,29 @@
             margin-bottom: 2rem;
         }
 
+        /* Ajuste crucial: min-height garante que o card não encolha quando o botão sair do fluxo */
         .btn-group {
             display: flex;
             flex-direction: column;
             gap: 15px;
             align-items: center;
             position: relative;
+            min-height: 120px; 
+            width: 100%;
         }
 
         button {
-            padding: 14px 28px;
+            padding: 12px 20px;
             border-radius: 50px;
             border: none;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             cursor: pointer;
-            font-size: 1rem;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 0.95rem;
+            transition: left 0.3s ease, top 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
             width: 100%;
-            max-width: 250px;
+            max-width: 260px;
+            white-space: normal; /* Evita que botões com texto longo quebrem o layout */
         }
 
         button:active { transform: scale(0.95); }
@@ -132,7 +136,7 @@
             color: #d81b60;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             z-index: 999;
-            transition: left 0.3s ease, top 0.3s ease;
+            position: relative; /* Garante que comece no lugar certo */
         }
 
         .fade-in {
@@ -159,7 +163,7 @@
     <div id="surprise-container" class="fade-in">
         
         <div class="photo-frame">
-            <img src="foto.jpg" alt="Nossa Foto">
+            <img src="https://via.placeholder.com/150/ff9a9e/880e4f?text=Nossa+Foto" alt="Nossa Foto">
         </div>
 
         <div id="dynamic-content">
@@ -232,6 +236,7 @@
         ];
 
         let etapaAtual = 0;
+        let podeFugir = false; // Controle anti-bug para evitar fuga prematura
         const dynamicContent = document.getElementById('dynamic-content');
 
         function renderizarEtapa() {
@@ -240,30 +245,27 @@
                 return;
             }
 
+            // Bloqueia a fuga por 500ms na nova tela para o dedo/mouse não disparar acidentalmente
+            podeFugir = false;
+            setTimeout(() => { podeFugir = true; }, 500);
+
             const etapa = etapas[etapaAtual];
-            
             const container = document.getElementById('surprise-container');
+            
             container.classList.remove('fade-in');
             void container.offsetWidth; 
             container.classList.add('fade-in');
 
             let htmlInjetado = '';
-            
-            if (etapa.passo) {
-                htmlInjetado += `<span class="step-counter">${etapa.passo}</span>`;
-            }
-            
+            if (etapa.passo) htmlInjetado += `<span class="step-counter">${etapa.passo}</span>`;
             htmlInjetado += `<h1>${etapa.titulo}</h1>`;
-            
-            if (etapa.subtitulo) {
-                htmlInjetado += `<h2>${etapa.subtitulo}</h2>`;
-            }
+            if (etapa.subtitulo) htmlInjetado += `<h2>${etapa.subtitulo}</h2>`;
             
             htmlInjetado += `
                 <p>${etapa.texto}</p>
                 <div class="btn-group">
                     <button id="btn-sim" onclick="proximaEtapa()">${etapa.textoSim}</button>
-                    <button id="btn-nao" onmouseover="fugir()" ontouchstart="fugir()">${etapa.textoNao}</button>
+                    <button id="btn-nao" onmouseenter="fugir(event)" ontouchstart="fugir(event)">${etapa.textoNao}</button>
                 </div>
             `;
 
@@ -275,24 +277,26 @@
             renderizarEtapa();
         }
 
-        function fugir() {
+        function fugir(e) {
+            if (e) e.preventDefault(); // Evita scroll estranho ou "double-tap" no mobile
+            if (!podeFugir) return; // Se a tela acabou de carregar, não foge
+
             const btnNao = document.getElementById('btn-nao');
-            
             btnNao.style.position = 'fixed';
             
-            const larguraJanela = window.innerWidth;
-            const alturaJanela = window.innerHeight;
+            const margem = 20; // Garante que o botão não encoste nas bordas
             const larguraBtn = btnNao.offsetWidth;
             const alturaBtn = btnNao.offsetHeight;
             
-            const limiteX = larguraJanela - larguraBtn - 20;
-            const limiteY = alturaJanela - alturaBtn - 20;
+            // Subtrai a largura/altura do botão para ele nunca vazar da tela
+            const limiteMaxX = window.innerWidth - larguraBtn - margem;
+            const limiteMaxY = window.innerHeight - alturaBtn - margem;
             
-            const novaPosicaoX = Math.max(20, Math.floor(Math.random() * limiteX));
-            const novaPosicaoY = Math.max(20, Math.floor(Math.random() * limiteY));
+            const novoX = Math.max(margem, Math.floor(Math.random() * limiteMaxX));
+            const novoY = Math.max(margem, Math.floor(Math.random() * limiteMaxY));
             
-            btnNao.style.left = novaPosicaoX + 'px';
-            btnNao.style.top = novaPosicaoY + 'px';
+            btnNao.style.left = novoX + 'px';
+            btnNao.style.top = novoY + 'px';
         }
 
         function celebrar() {
