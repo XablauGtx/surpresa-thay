@@ -23,7 +23,7 @@
             background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            overflow: hidden; /* Impede a rolagem da tela */
+            overflow: hidden; /* Trava a rolagem */
         }
 
         @keyframes gradientBG {
@@ -32,21 +32,20 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Container Principal - Glassmorphism */
+        /* Container Principal */
         #surprise-container {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 2.5rem 2rem;
+            padding: 2.5rem 1.5rem;
             width: 90%;
             max-width: 450px;
             text-align: center;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 10;
-            transition: all 0.3s ease-in-out;
         }
 
         /* Carrossel de Fotos */
@@ -72,8 +71,16 @@
             transition: opacity 1s ease-in-out;
         }
 
-        .photo-frame img.active {
-            opacity: 1;
+        .photo-frame img.active { opacity: 1; }
+
+        .step-counter {
+            font-size: 0.8rem;
+            color: #d81b60;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
         }
 
         h1 {
@@ -81,7 +88,6 @@
             color: #d81b60;
             font-size: 2.8rem;
             margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
         }
 
         /* Contador em Tempo Real */
@@ -104,7 +110,7 @@
         }
 
         .time-box span.number {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: #d81b60;
         }
@@ -120,35 +126,37 @@
             min-height: 3em;
             color: #ad1457;
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        .description {
+        #main-text {
             font-size: 0.95rem;
             color: #444;
             line-height: 1.6;
             margin-bottom: 2rem;
+            min-height: 100px; /* Garante que o texto não empurre as coisas bruscamente */
         }
 
-        /* Área de Botões */
+        /* Área dos Botões */
         .btn-group {
-            margin-top: 2rem;
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Coloca um embaixo do outro */
+            align-items: center;
             gap: 15px;
-            height: 50px;
+            min-height: 120px;
             position: relative;
         }
 
         button {
-            padding: 12px 24px;
+            width: 250px; /* Largura fixa impede bugs ao ficar position fixed */
+            padding: 14px 20px;
             border-radius: 50px;
             border: none;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             cursor: pointer;
             font-size: 1rem;
-            transition: all 0.2s ease;
+            transition: left 0.3s ease-out, top 0.3s ease-out, background-color 0.2s ease, transform 0.1s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
@@ -162,14 +170,11 @@
 
         #btn-sim:hover { background-color: #ad1457; }
 
-        /* Estilo do botão fugitivo */
         #btn-nao {
             background-color: #fce4ec;
             color: #d81b60;
-            position: absolute;
+            position: relative;
             z-index: 999;
-            /* Transição suave para a fuga */
-            transition: left 0.3s ease, top 0.3s ease, background-color 0.2s ease;
         }
 
         /* Tela de Sucesso */
@@ -197,59 +202,48 @@
     <audio id="musica" src="musica.mp3"></audio>
 
     <div id="surprise-container">
+        
+        <div class="photo-frame">
+            <img src="https://via.placeholder.com/150/ff9a9e/880e4f?text=Nossa+Foto+1" alt="Foto 1" class="active">
+            <img src="https://via.placeholder.com/150/fad0c4/880e4f?text=Nossa+Foto+2" alt="Foto 2">
+            <img src="https://via.placeholder.com/150/fce4ec/880e4f?text=Nossa+Foto+3" alt="Foto 3">
+        </div>
+
         <div id="main-content">
-            <div class="photo-frame">
-                <img src="foto.jpg" alt="Nossa Foto 1" class="active">
-            </div>
-
-            <h1>Oi, Amor! ❤️</h1>
+            <span id="step-counter" class="step-counter hidden"></span>
+            <h1 id="title">Oi, Thay! ❤️</h1>
             
-            <div class="typewriter-text" id="typewriter"></div>
-
-            <div class="live-counter">
-                <div class="time-box">
-                    <span class="number" id="dias">516</span>
-                    <span class="label">Dias</span>
-                </div>
-                <div class="time-box">
-                    <span class="number" id="horas">00</span>
-                    <span class="label">Horas</span>
-                </div>
-                <div class="time-box">
-                    <span class="number" id="minutos">00</span>
-                    <span class="label">Min</span>
-                </div>
-                <div class="time-box">
-                    <span class="number" id="segundos">00</span>
-                    <span class="label">Seg</span>
+            <div id="first-screen-extras">
+                <div class="typewriter-text" id="typewriter"></div>
+                <div class="live-counter">
+                    <div class="time-box"><span class="number" id="dias">516</span><span class="label">Dias</span></div>
+                    <div class="time-box"><span class="number" id="horas">00</span><span class="label">Horas</span></div>
+                    <div class="time-box"><span class="number" id="minutos">00</span><span class="label">Min</span></div>
+                    <div class="time-box"><span class="number" id="segundos">00</span><span class="label">Seg</span></div>
                 </div>
             </div>
 
-            <p class="description">
-                516 dias de muita parceria, risadas e o melhor loop de amor do universo.<br>
-                (ou 1 ano e 5 meses no deploy da nossa felicidade).
-            </p>
-            <h3>Você aceita continuar me fazendo a pessoa mais feliz do mundo para sempre?</h3>
+            <div id="main-text"></div>
 
             <div class="btn-group">
-                <button id="btn-sim" onclick="celebrar()">COM CERTEZA!</button>
-                <button id="btn-nao" onmouseover="fugir(event)" ontouchstart="fugir(event)">Não</button>
+                <button id="btn-sim" onclick="proximaEtapa()">COM CERTEZA!</button>
+                <button id="btn-nao" onmouseenter="fugir(event)" ontouchstart="fugir(event)">Não</button>
             </div>
         </div>
 
         <div id="success-screen" class="hidden success-content">
-            <div style="font-size: 80px; margin-bottom: 20px;">😍💍✨</div>
+            <div style="font-size: 70px; margin-bottom: 15px;">😍💍✨</div>
             <h1 style="font-size: 3rem;">Eu sabia!</h1>
-            <p class="description">
-                Você é o meu commit mais importante. Meu deploy na Main é para a eternidade.<br>
-                Te amo infinitamente, Amor!
+            <p style="font-size: 1.1rem; color: #444; line-height: 1.6; margin-bottom: 2rem;">
+                Você é a minha melhor escolha todos os dias.<br>
+                Nosso deploy na Main está garantido para a eternidade!
             </p>
-            <p style="font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ad1457;">Ass: Seu Amor</p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #ad1457;">Ass: Gustavo</p>
         </div>
     </div>
 
     <script>
-        // Carrossel de Fotos
+        // Lógica do Carrossel
         const photos = document.querySelectorAll('.photo-frame img');
         let currentPhotoIndex = 0;
         setInterval(() => {
@@ -258,110 +252,192 @@
             photos[currentPhotoIndex].classList.add('active');
         }, 3000);
 
-        // Timer em Tempo Real (Calculando desde 516 dias atrás)
+        // Timer em Tempo Real (516 dias)
         const dataInicio = new Date();
         dataInicio.setDate(dataInicio.getDate() - 516);
-
         function atualizarContador() {
             const agora = new Date();
             const diferenca = agora - dataInicio;
-            const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-            const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
-            const minutos = Math.floor((diferenca / 1000 / 60) % 60);
-            const segundos = Math.floor((diferenca / 1000) % 60);
-            document.getElementById('dias').innerText = dias;
-            document.getElementById('horas').innerText = horas.toString().padStart(2, '0');
-            document.getElementById('minutos').innerText = minutos.toString().padStart(2, '0');
-            document.getElementById('segundos').innerText = segundos.toString().padStart(2, '0');
+            document.getElementById('dias').innerText = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+            document.getElementById('horas').innerText = Math.floor((diferenca / (1000 * 60 * 60)) % 24).toString().padStart(2, '0');
+            document.getElementById('minutos').innerText = Math.floor((diferenca / 1000 / 60) % 60).toString().padStart(2, '0');
+            document.getElementById('segundos').innerText = Math.floor((diferenca / 1000) % 60).toString().padStart(2, '0');
         }
         setInterval(atualizarContador, 1000);
         atualizarContador();
 
-        // Efeito Máquina de Escrever
+        // Máquina de Escrever
         const textToType = "Em cada linha de código da minha vida, você é a variável principal...";
         let i = 0;
         function typeWriter() {
             if (i < textToType.length) {
                 document.getElementById("typewriter").innerHTML += textToType.charAt(i);
                 i++;
-                setTimeout(typeWriter, 50);
+                setTimeout(typeWriter, 40);
             }
         }
         window.onload = typeWriter;
 
-        // Easter Egg no Console (F12 para ver)
-        console.log("%c Olá, Amor! Se você está lendo isso, o código funcionou!", "color: #d81b60; font-size: 20px; font-weight: bold;");
-        console.log("Status da aplicação: 100% Apaixonado.");
-    </script>
+        // --- FLUXO DE PERGUNTAS ---
+        const etapas = [
+            {
+                passo: "",
+                titulo: "Oi, Thay! ❤️",
+                texto: "516 dias de muita parceria, risadas e o melhor loop de amor do universo.<br><br>(ou 1 ano e 5 meses no deploy da nossa felicidade).<br><br><b>Você aceita continuar me fazendo a pessoa mais feliz do mundo?</b>",
+                btnSim: "COM CERTEZA!",
+                btnNao: "Não"
+            },
+            {
+                passo: "PASSO 1 DE 5 DE CONFIRMAÇÃO",
+                titulo: "Tem certeza?",
+                texto: "Mas tem certeza <b>mesmo</b>? Nosso commit é longo e maravilhoso... Pensa bem nos nossos infinitos commits diários de amor.",
+                btnSim: "Sim, tenho certeza!",
+                btnNao: "Vou pensar mais..."
+            },
+            {
+                passo: "PASSO 2 DE 5 DE CONFIRMAÇÃO",
+                titulo: "Absoluta?",
+                texto: "Olha que na nossa branch principal não tem <code>git revert</code> nem <code>CTRL+Z</code>! É um merge direto na main.",
+                btnSim: "Eu assumo o risco!",
+                btnNao: "Melhor dar rollback..."
+            },
+            {
+                passo: "PASSO 3 DE 5 DE CONFIRMAÇÃO",
+                titulo: "Pensa bem...",
+                texto: "Vai ter que me aturar pedindo cafuné todos os dias. É literalmente um <code>while(true) { amor++; }</code>. Tem certeza?",
+                btnSim: "Eu amo esse loop!",
+                btnNao: "Break;"
+            },
+            {
+                passo: "PASSO 4 DE 5 DE CONFIRMAÇÃO",
+                titulo: "Sem pressão...",
+                texto: "Se clicar em SIM de novo, vamos ter que ser felizes para o resto da vida. Não diga que não avisei!",
+                btnSim: "É o que eu mais quero!",
+                btnNao: "Pera, me dá um tempo..."
+            },
+            {
+                passo: "ÚLTIMA CONFIRMAÇÃO",
+                titulo: "Última chance!",
+                texto: "Aperte o botão para confirmar nossa união para sempre no servidor de produção da vida. ❤️",
+                btnSim: "Fazer Deploy do Amor! 🚀",
+                btnNao: "Abortar missão!"
+            }
+        ];
 
-    <script>
-        function fugir(event) {
-            const btnNao = document.getElementById('btn-nao');
+        let etapaAtual = 0;
+        let podeFugir = false;
+
+        function carregarEtapa() {
+            const etapa = etapas[etapaAtual];
             
-            // Muda a posição para 'fixed' apenas na primeira interação
-            if (btnNao.style.position !== 'fixed') {
-                btnNao.style.position = 'fixed';
+            // Atualiza os textos sem destruir os elementos
+            document.getElementById('title').innerHTML = etapa.titulo;
+            document.getElementById('main-text').innerHTML = etapa.texto;
+            document.getElementById('btn-sim').innerText = etapa.btnSim;
+            document.getElementById('btn-nao').innerText = etapa.btnNao;
+
+            // Mostra o passo atual
+            const counter = document.getElementById('step-counter');
+            if (etapa.passo) {
+                counter.innerText = etapa.passo;
+                counter.classList.remove('hidden');
             }
 
-            // Margem de segurança das bordas (30px)
-            const safeMargin = 30;
-
-            // Viewport dimensions (área visível da tela)
-            const vWidth = window.innerWidth;
-            const vHeight = window.innerHeight;
-
-            // Button dimensions (crucial para o cálculo)
-            const bWidth = btnNao.offsetWidth;
-            const bHeight = btnNao.offsetHeight;
-
-            // Calcula o alcance permitido [min, max]
-            // maxX = Largura total da janela - largura do botão - margem
-            const maxX = vWidth - bWidth - safeMargin;
-            const maxY = vHeight - bHeight - safeMargin;
-            const minX = safeMargin;
-            const minY = safeMargin;
-
-            // Gera novas coordenadas aleatórias estritamente dentro dos limites permitidos
-            const newX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
-            const newY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
-
-            // Mobile prevention: prevent the actual click event if touching
-            if (event && event.type === 'touchstart') {
-                event.preventDefault();
+            // Esconde relógio e typewriter após a primeira tela para não poluir
+            if (etapaAtual > 0) {
+                document.getElementById('first-screen-extras').style.display = 'none';
             }
 
-            // Aplica as novas coordenadas (a transição CSS cuida do movimento suave)
-            btnNao.style.left = newX + 'px';
-            btnNao.style.top = newY + 'px';
+            // RESET DO BOTÃO "NÃO" (A Mágica)
+            // Traz o botão de volta para o lado do "Sim" pra enganar ela de novo
+            const btnNao = document.getElementById('btn-nao');
+            btnNao.style.position = 'relative';
+            btnNao.style.left = 'auto';
+            btnNao.style.top = 'auto';
+            
+            // Trava a fuga por 500ms para o mouse/dedo não bater no botão sem querer na troca de tela
+            podeFugir = false;
+            setTimeout(() => { podeFugir = true; }, 500);
         }
 
-        // Função do "SIM"
+        function proximaEtapa() {
+            etapaAtual++;
+            if (etapaAtual >= etapas.length) {
+                celebrar();
+            } else {
+                carregarEtapa();
+            }
+        }
+
+        // Lógica de Fuga Perfeita e Limitada à Tela
+        function fugir(e) {
+            if (e && e.type === 'touchstart') e.preventDefault();
+            if (!podeFugir) return;
+
+            const btnNao = document.getElementById('btn-nao');
+            
+            // Pega a posição atual ANTES de virar fixed para não piscar
+            if (btnNao.style.position !== 'fixed') {
+                const rect = btnNao.getBoundingClientRect();
+                btnNao.style.left = rect.left + 'px';
+                btnNao.style.top = rect.top + 'px';
+                btnNao.style.position = 'fixed';
+                void btnNao.offsetWidth; // Força renderização pro CSS aplicar a transição a partir daqui
+            }
+
+            // Cálculos exatos baseados na tela e no tamanho fixo do botão
+            const larguraBtn = btnNao.offsetWidth;
+            const alturaBtn = btnNao.offsetHeight;
+            const margem = 20;
+
+            const limiteX = window.innerWidth - larguraBtn - margem;
+            const limiteY = window.innerHeight - alturaBtn - margem;
+
+            // Gera nova posição aleatória garantindo que fica dentro dos limites
+            const novoX = Math.max(margem, Math.floor(Math.random() * limiteX));
+            const novoY = Math.max(margem, Math.floor(Math.random() * limiteY));
+
+            btnNao.style.left = novoX + 'px';
+            btnNao.style.top = novoY + 'px';
+        }
+
+        // Tela Final e Partículas
         function celebrar() {
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('success-screen').classList.remove('hidden');
-            document.getElementById('musica').play().catch(() => console.log("Áudio bloqueado."));
-            setInterval(createParticle, 100);
+            document.getElementById('musica').play().catch(() => {});
+            
+            const interval = setInterval(criarParticula, 80);
+            setTimeout(() => clearInterval(interval), 5000);
         }
 
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            const types = ['❤️', '💖', '✨', '💕', '🥰', '🎉'];
-            particle.innerHTML = types[Math.floor(Math.random() * types.length)];
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.top = '-50px'; 
-            particle.style.fontSize = Math.random() * 20 + 15 + 'px';
+        function criarParticula() {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            const tipos = ['❤️', '💖', '✨', '💕', '🥰', '🎉'];
+            p.innerHTML = tipos[Math.floor(Math.random() * tipos.length)];
+            
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = '-5vh'; 
+            p.style.fontSize = Math.random() * 20 + 15 + 'px';
+            
             const duracao = Math.random() * 2 + 3;
-            particle.style.transition = `top ${duracao}s linear, left ${duracao}s ease-in-out, transform ${duracao}s linear, opacity ${duracao}s ease-in`;
-            document.body.appendChild(particle);
+            p.style.transition = `top ${duracao}s linear, left ${duracao}s ease-in-out, transform ${duracao}s linear, opacity ${duracao}s ease-in`;
+            
+            document.body.appendChild(p);
+
             setTimeout(() => {
-                particle.style.top = '110vh';
-                particle.style.left = (parseFloat(particle.style.left) + (Math.random() - 0.5) * 30) + 'vw';
-                particle.style.transform = `rotate(${Math.random() * 720}deg)`;
-                particle.style.opacity = '0';
+                p.style.top = '110vh';
+                p.style.left = (parseFloat(p.style.left) + (Math.random() - 0.5) * 30) + 'vw';
+                p.style.transform = `rotate(${Math.random() * 720}deg)`;
+                p.style.opacity = '0';
             }, 50);
-            setTimeout(() => particle.remove(), duracao * 1000);
+
+            setTimeout(() => p.remove(), duracao * 1000);
         }
+
+        // Inicia a primeira tela
+        carregarEtapa();
     </script>
 </body>
 </html>
