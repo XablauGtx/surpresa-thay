@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para o Meu Amor ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +12,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Remove o flash azul ao tocar no mobile */
         }
 
         body {
@@ -23,7 +24,7 @@
             background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            overflow: hidden; /* Trava a rolagem */
+            overflow: hidden; /* Trava a rolagem do fundo da página */
         }
 
         @keyframes gradientBG {
@@ -39,20 +40,26 @@
             -webkit-backdrop-filter: blur(12px);
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 2.5rem 1.5rem;
-            width: 90%;
+            padding: 2rem 1.5rem;
+            width: 95%;
             max-width: 450px;
+            max-height: 95vh; /* Impede que vaze verticalmente */
+            overflow-y: auto; /* Rola conteúdo interno se necessário */
             text-align: center;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 10;
+            /* Esconde barra de rolagem */
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
         }
+        #surprise-container::-webkit-scrollbar { display: none; }
 
         /* Carrossel de Fotos */
         .photo-frame {
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 1.5rem auto;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 1rem auto;
             border-radius: 50%;
             overflow: hidden;
             border: 5px solid rgba(255, 255, 255, 0.6);
@@ -79,27 +86,26 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             display: block;
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
             color: #d81b60;
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             margin-bottom: 0.5rem;
         }
 
-        /* Contador em Tempo Real */
+        /* Contador */
         .live-counter {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 15px;
             padding: 10px;
-            margin: 1.5rem 0;
+            margin: 1rem 0;
             display: flex;
             justify-content: space-between;
             gap: 5px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .time-box {
@@ -110,54 +116,58 @@
         }
 
         .time-box span.number {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 600;
             color: #d81b60;
         }
 
         .time-box span.label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             color: #666;
             font-weight: 600;
         }
 
         .typewriter-text {
-            min-height: 3em;
+            min-height: 2.5em;
             color: #ad1457;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
         }
 
         #main-text {
             font-size: 0.95rem;
             color: #444;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            min-height: 100px; /* Garante que o texto não empurre as coisas bruscamente */
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            min-height: 80px; 
         }
 
         /* Área dos Botões */
         .btn-group {
             display: flex;
-            flex-direction: column; /* Coloca um embaixo do outro */
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
-            min-height: 120px;
+            gap: 12px;
+            min-height: 120px; /* Aumentado para dar espaço ao "Não" antes de fugir */
             position: relative;
+            width: 100%;
         }
 
         button {
-            width: 250px; /* Largura fixa impede bugs ao ficar position fixed */
-            padding: 14px 20px;
+            width: 100%; 
+            max-width: 260px;
+            padding: 14px 15px;
             border-radius: 50px;
             border: none;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             cursor: pointer;
-            font-size: 1rem;
-            transition: left 0.3s ease-out, top 0.3s ease-out, background-color 0.2s ease, transform 0.1s;
+            font-size: 0.95rem;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            /* Transição suave apenas para cor, transform e opacity inicialmente */
+            transition: background-color 0.2s ease, transform 0.1s, opacity 0.5s ease;
         }
 
         button:active { transform: scale(0.95); }
@@ -173,11 +183,11 @@
         #btn-nao {
             background-color: #fce4ec;
             color: #d81b60;
-            position: relative;
-            z-index: 999;
+            z-index: 1; /* Começa atrás do Sim se houver sobreposição */
+            /* Quando fugir, adicionaremos a transição de movimento via JS */
         }
 
-        /* Tela de Sucesso */
+        /* Telas Ocultas */
         .hidden { display: none !important; }
 
         .success-content {
@@ -195,6 +205,16 @@
             pointer-events: none;
             z-index: 100;
         }
+
+        /* Media Queries Mobile */
+        @media (max-width: 400px) {
+            #surprise-container { padding: 1.5rem 1rem; }
+            .photo-frame { width: 100px; height: 100px; }
+            h1 { font-size: 2.2rem; }
+            .time-box span.number { font-size: 1.2rem; }
+            #main-text { font-size: 0.85rem; min-height: 60px; }
+            button { padding: 12px 10px; font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
@@ -204,9 +224,7 @@
     <div id="surprise-container">
         
         <div class="photo-frame">
-            <img src="https://via.placeholder.com/150/ff9a9e/880e4f?text=Nossa+Foto+1" alt="Foto 1" class="active">
-            <img src="https://via.placeholder.com/150/fad0c4/880e4f?text=Nossa+Foto+2" alt="Foto 2">
-            <img src="https://via.placeholder.com/150/fce4ec/880e4f?text=Nossa+Foto+3" alt="Foto 3">
+            <img src="foto.jpg" alt="Foto 1" class="active">
         </div>
 
         <div id="main-content">
@@ -225,7 +243,7 @@
 
             <div id="main-text"></div>
 
-            <div class="btn-group">
+            <div class="btn-group" id="btn-group">
                 <button id="btn-sim" onclick="proximaEtapa()">COM CERTEZA!</button>
                 <button id="btn-nao" onmouseenter="fugir(event)" ontouchstart="fugir(event)">Não</button>
             </div>
@@ -234,16 +252,16 @@
         <div id="success-screen" class="hidden success-content">
             <div style="font-size: 70px; margin-bottom: 15px;">😍💍✨</div>
             <h1 style="font-size: 3rem;">Eu sabia!</h1>
-            <p style="font-size: 1.1rem; color: #444; line-height: 1.6; margin-bottom: 2rem;">
+            <p style="font-size: 1.05rem; color: #444; line-height: 1.6; margin-bottom: 1.5rem;">
                 Você é a minha melhor escolha todos os dias.<br>
                 Nosso deploy na Main está garantido para a eternidade!
             </p>
-            <p style="font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #ad1457;">Ass: Gustavo</p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #ad1457;">Ass: Gustavo</p>
         </div>
     </div>
 
     <script>
-        // Lógica do Carrossel
+        // Lógica do Carrossel e Timer (Inalterados)
         const photos = document.querySelectorAll('.photo-frame img');
         let currentPhotoIndex = 0;
         setInterval(() => {
@@ -252,7 +270,6 @@
             photos[currentPhotoIndex].classList.add('active');
         }, 3000);
 
-        // Timer em Tempo Real (516 dias)
         const dataInicio = new Date();
         dataInicio.setDate(dataInicio.getDate() - 516);
         function atualizarContador() {
@@ -266,7 +283,6 @@
         setInterval(atualizarContador, 1000);
         atualizarContador();
 
-        // Máquina de Escrever
         const textToType = "Em cada linha de código da minha vida, você é a variável principal...";
         let i = 0;
         function typeWriter() {
@@ -330,32 +346,37 @@
         function carregarEtapa() {
             const etapa = etapas[etapaAtual];
             
-            // Atualiza os textos sem destruir os elementos
             document.getElementById('title').innerHTML = etapa.titulo;
             document.getElementById('main-text').innerHTML = etapa.texto;
             document.getElementById('btn-sim').innerText = etapa.btnSim;
-            document.getElementById('btn-nao').innerText = etapa.btnNao;
+            
+            // RESET DO BOTÃO "NÃO" (Trazer de volta para dentro do container se ele fugiu)
+            const btnNao = document.getElementById('btn-nao');
+            const btnGroup = document.getElementById('btn-group');
+            
+            // Se ele estiver no Body, movemos de volta para o grupo de botões
+            if (btnNao.parentNode !== btnGroup) {
+                // Remove a transição de movimento para ele voltar instantaneamente
+                btnNao.style.transition = 'background-color 0.2s ease, transform 0.1s, opacity 0.5s ease';
+                btnNao.style.position = 'relative';
+                btnNao.style.left = 'auto';
+                btnNao.style.top = 'auto';
+                btnNao.style.width = '100%'; // Restaura largura responsiva
+                btnGroup.appendChild(btnNao);
+            }
+            
+            btnNao.innerText = etapa.btnNao;
 
-            // Mostra o passo atual
             const counter = document.getElementById('step-counter');
             if (etapa.passo) {
                 counter.innerText = etapa.passo;
                 counter.classList.remove('hidden');
             }
 
-            // Esconde relógio e typewriter após a primeira tela para não poluir
             if (etapaAtual > 0) {
                 document.getElementById('first-screen-extras').style.display = 'none';
             }
-
-            // RESET DO BOTÃO "NÃO" (A Mágica)
-            // Traz o botão de volta para o lado do "Sim" pra enganar ela de novo
-            const btnNao = document.getElementById('btn-nao');
-            btnNao.style.position = 'relative';
-            btnNao.style.left = 'auto';
-            btnNao.style.top = 'auto';
             
-            // Trava a fuga por 500ms para o mouse/dedo não bater no botão sem querer na troca de tela
             podeFugir = false;
             setTimeout(() => { podeFugir = true; }, 500);
         }
@@ -369,31 +390,44 @@
             }
         }
 
-        // Lógica de Fuga Perfeita e Limitada à Tela
+        // --- LÓGICA DE FUGA PELA TELA TODA (CORRIGIDA) ---
         function fugir(e) {
             if (e && e.type === 'touchstart') e.preventDefault();
             if (!podeFugir) return;
 
             const btnNao = document.getElementById('btn-nao');
             
-            // Pega a posição atual ANTES de virar fixed para não piscar
-            if (btnNao.style.position !== 'fixed') {
+            // A MÁGICA: Se ele ainda estiver dentro da caixa branca, nós arrancamos ele de lá
+            if (btnNao.parentNode !== document.body) {
+                // Pega a posição exata dele na tela ANTES de mover
                 const rect = btnNao.getBoundingClientRect();
+                const larguraAtual = btnNao.offsetWidth;
+
+                // Define a posição exata e trava a largura para ele não deformar ao sair
+                btnNao.style.width = larguraAtual + 'px';
                 btnNao.style.left = rect.left + 'px';
                 btnNao.style.top = rect.top + 'px';
                 btnNao.style.position = 'fixed';
-                void btnNao.offsetWidth; // Força renderização pro CSS aplicar a transição a partir daqui
+                
+                // Move o elemento para o <body> (sai de dentro do container branco)
+                document.body.appendChild(btnNao);
+                
+                // Força o navegador a processar a mudança de DOM
+                void btnNao.offsetWidth; 
+
+                // Agora adiciona a transição de movimento suave (apenas para left/top)
+                btnNao.style.transition = 'left 0.3s ease-out, top 0.3s ease-out, background-color 0.2s ease, transform 0.1s, opacity 0.5s ease';
             }
 
-            // Cálculos exatos baseados na tela e no tamanho fixo do botão
+            // Cálculos exatos baseados na viewport inteira
             const larguraBtn = btnNao.offsetWidth;
             const alturaBtn = btnNao.offsetHeight;
-            const margem = 20;
+            const margem = 15; // Margem de segurança das bordas da tela
 
             const limiteX = window.innerWidth - larguraBtn - margem;
             const limiteY = window.innerHeight - alturaBtn - margem;
 
-            // Gera nova posição aleatória garantindo que fica dentro dos limites
+            // Gera nova posição aleatória pela tela toda
             const novoX = Math.max(margem, Math.floor(Math.random() * limiteX));
             const novoY = Math.max(margem, Math.floor(Math.random() * limiteY));
 
@@ -401,7 +435,7 @@
             btnNao.style.top = novoY + 'px';
         }
 
-        // Tela Final e Partículas
+        // Celebração Final (Inalterada)
         function celebrar() {
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('success-screen').classList.remove('hidden');
@@ -436,7 +470,6 @@
             setTimeout(() => p.remove(), duracao * 1000);
         }
 
-        // Inicia a primeira tela
         carregarEtapa();
     </script>
 </body>
