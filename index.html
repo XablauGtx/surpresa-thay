@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para o Meu Amor ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden; /* Impede a rolagem da tela */
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Container Principal com Efeito de Vidro */
+        #surprise-container {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 2.5rem 2rem;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .photo-frame {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 1.5rem auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .step-counter {
+            font-size: 0.8rem;
+            color: #d81b60;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #d81b60;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #ad1457;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            position: relative;
+        }
+
+        button {
+            padding: 14px 28px;
+            border-radius: 50px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        button:active { transform: scale(0.95); }
+
+        #btn-sim {
+            background-color: #d81b60;
+            color: white;
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+            z-index: 5;
+        }
+
+        #btn-sim:hover { background-color: #ad1457; }
+
+        #btn-nao {
+            background-color: #fce4ec;
+            color: #d81b60;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            z-index: 999; /* Garante que ele passe por cima de tudo na tela ao fugir */
+            transition: left 0.3s ease, top 0.3s ease;
+        }
+
+        /* Animação suave entre as telas */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden { display: none !important; }
+
+        /* Partículas da tela final */
+        .particle {
+            position: absolute;
+            user-select: none;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="surprise-container" class="fade-in">
+        
+        <div class="photo-frame">
+            <img src="foto.jpg" alt="Nossa Foto">
+        </div>
+
+        <div id="dynamic-content">
+            </div>
+
+        <div id="success-screen" class="hidden">
+            <div style="font-size: 60px; margin-bottom: 15px;">😍💍✨</div>
+            <h1 style="font-size: 3rem;">Eu sabia!</h1>
+            <p>
+                Você é a minha melhor escolha todos os dias.<br>
+                Nosso deploy na Main está garantido para a eternidade!
+            </p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ad1457; margin-top: 10px;">
+                Ass: Gustavo
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Array com todas as telas (Fluxo de perguntas)
+        const etapas = [
+            {
+                passo: "",
+                titulo: "Oi, Amor! ❤️",
+                subtitulo: "Hoje completamos 516 dias juntos!",
+                texto: "516 dias de risadas, companheirismo e muito amor.<br><br>(ou 1 ano e 5 meses no melhor commit da minha vida).<br><br><b>Você aceita continuar me fazendo a pessoa mais feliz do mundo?</b>",
+                textoSim: "COM CERTEZA!",
+                textoNao: "Não"
+            },
+            {
+                passo: "PASSO 1 DE 5 DE CONFIRMAÇÃO",
+                titulo: "Tem certeza?",
+                subtitulo: "",
+                texto: "Mas tem certeza <b>mesmo</b>? Nosso commit é longo e maravilhoso... Pensa bem nos nossos infinitos commits diários de amor.",
+                textoSim: "Sim, tenho certeza!",
+                textoNao: "Vou pensar mais..."
+            },
+            {
+                passo: "PASSO 2 DE 5 DE CONFIRMAÇÃO",
+                titulo: "Absoluta?",
+                subtitulo: "",
+                texto: "Olha que na nossa branch principal (a vida) não tem <code>git revert</code> nem <code>CTRL+Z</code>! É um merge direto na main.",
+                textoSim: "Eu assumo o risco!",
+                textoNao: "Melhor dar rollback..."
+            },
+            {
+                passo: "PASSO 3 DE 5 DE CONFIRMAÇÃO",
+                titulo: "Pensa bem...",
+                subtitulo: "",
+                texto: "Vai ter que me aturar pedindo cafuné todos os dias. É literalmente um <code>while(true) { amor++; }</code>. Tem certeza?",
+                textoSim: "Eu amo esse loop!",
+                textoNao: "Break;"
+            },
+            {
+                passo: "PASSO 4 DE 5 DE CONFIRMAÇÃO",
+                titulo: "Sem pressão, mas...",
+                subtitulo: "",
+                texto: "Se clicar em SIM de novo, vamos ter que ser felizes para o resto da vida. Não diga que não avisei!",
+                textoSim: "É exatamente o que eu quero!",
+                textoNao: "Pera, me dá um tempo..."
+            },
+            {
+                passo: "ÚLTIMA CONFIRMAÇÃO",
+                titulo: "Última chance!",
+                subtitulo: "",
+                texto: "Aperte o botão para confirmar nossa união para sempre no servidor de produção da vida. ❤️",
+                textoSim: "Fazer Deploy do Amor! 🚀",
+                textoNao: "Abortar missão!"
+            }
+        ];
+
+        let etapaAtual = 0;
+        const dynamicContent = document.getElementById('dynamic-content');
+
+        // Função para renderizar a tela atual
+        function renderizarEtapa() {
+            // Se chegou no fim do array, mostra a tela de sucesso
+            if (etapaAtual >= etapas.length) {
+                celebrar();
+                return;
+            }
+
+            const etapa = etapas[etapaAtual];
+            
+            // Remove a classe de animação e adiciona de novo para refazer o efeito fade
+            const container = document.getElementById('surprise-container');
+            container.classList.remove('fade-in');
+            void container.offsetWidth; // Trigger reflow para reiniciar a animação
+            container.classList.add('fade-in');
+
+            let htmlInjetado = '';
+            
+            if (etapa.passo) {
+                htmlInjetado += `<span class="step-counter">${etapa.passo}</span>`;
+            }
+            
+            htmlInjetado += `<h1>${etapa.titulo}</h1>`;
+            
+            if (etapa.subtitulo) {
+                htmlInjetado += `<h2>${etapa.subtitulo}</h2>`;
+            }
+            
+            htmlInjetado += `
+                <p>${etapa.texto}</p>
+                <div class="btn-group">
+                    <button id="btn-sim" onclick="proximaEtapa()">${etapa.textoSim}</button>
+                    <button id="btn-nao" onmouseover="fugir()" ontouchstart="fugir()">${etapa.textoNao}</button>
+                </div>
+            `;
+
+            dynamicContent.innerHTML = htmlInjetado;
+        }
+
+        // Avança para a próxima pergunta
+        function proximaEtapa() {
+            etapaAtual++;
+            renderizarEtapa();
+        }
+
+        // Lógica do botão "Não" fugindo de forma segura (para não sumir)
+        function fugir() {
+            const btnNao = document.getElementById('btn-nao');
+            
+            // Muda para fixed para flutuar pela tela inteira
+            btnNao.style.position = 'fixed';
+            
+            // Pega as dimensões da janela e do botão
+            const larguraJanela = window.innerWidth;
+            const alturaJanela = window.innerHeight;
+            const larguraBtn = btnNao.offsetWidth;
+            const alturaBtn = btnNao.offsetHeight;
+            
+            // Calcula o limite máximo onde o botão pode ir sem sair da tela (com 20px de margem)
+            const limiteX = larguraJanela - larguraBtn - 20;
+            const limiteY = alturaJanela - alturaBtn - 20;
+            
+            // Gera coordenadas aleatórias garantindo que não sejam negativas
+            const novaPosicaoX = Math.max(20, Math.floor(Math.random() * limiteX));
+            const novaPosicaoY = Math.max(20, Math.floor(Math.random() * limiteY));
+            
+            // Aplica as novas coordenadas
+            btnNao.style.left = novaPosicaoX + 'px';
+            btnNao.style.top = novaPosicaoY + 'px';
+        }
+
+        // Função final ao completar todas as etapas
+        function celebrar() {
+            dynamicContent.classList.add('hidden');
+            document.getElementById('success-screen').classList.remove('hidden');
+            iniciarParticulas();
+        }
+
+        // Inicializa a primeira tela assim que a página carregar
+        window.onload = renderizarEtapa;
+
+        // --- SISTEMA DE PARTÍCULAS (Corações e Confetes na tela final) ---
+        function iniciarParticulas() {
+            const interval = setInterval(criarParticula, 80);
+            setTimeout(() => clearInterval(interval), 6000); // Para de criar após 6 segundos
+        }
+
+        function criarParticula() {
+            const particula = document.createElement('div');
+            particula.classList.add('particle');
+            
+            const tipos = ['❤️', '💖', '✨', '💕', '🥰', '🎉'];
+            particula.innerHTML = tipos[Math.floor(Math.random() * tipos.length)];
+            
+            // Posição inicial no topo, espalhado horizontalmente
+            particula.style.left = Math.random() * 100 + 'vw';
+            particula.style.top = '-50px'; 
+            particula.style.fontSize = Math.random() * 20 + 15 + 'px';
+            
+            // Tempo de queda aleatório
+            const duracao = Math.random() * 2 + 3;
+            particula.style.transition = `top ${duracao}s linear, left ${duracao}s ease-in-out, transform ${duracao}s linear, opacity ${duracao}s ease-in`;
+            
+            document.body.appendChild(particula);
+
+            setTimeout(() => {
+                particula.style.top = '110vh';
+                particula.style.left = (parseFloat(particula.style.left) + (Math.random() - 0.5) * 30) + 'vw';
+                particula.style.transform = `rotate(${Math.random() * 720}deg)`;
+                particula.style.opacity = '0';
+            }, 50);
+
+            setTimeout(() => particula.remove(), duracao * 1000);
+        }
+    </script>
+</body>
+</html>
