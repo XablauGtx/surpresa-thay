@@ -23,7 +23,7 @@
             background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            overflow: hidden; /* Impede a rolagem da tela */
+            overflow: hidden;
         }
 
         @keyframes gradientBG {
@@ -32,7 +32,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Container Principal com Efeito de Vidro */
         #surprise-container {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
@@ -132,11 +131,10 @@
             background-color: #fce4ec;
             color: #d81b60;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            z-index: 999; /* Garante que ele passe por cima de tudo na tela ao fugir */
+            z-index: 999;
             transition: left 0.3s ease, top 0.3s ease;
         }
 
-        /* Animação suave entre as telas */
         .fade-in {
             animation: fadeIn 0.5s ease-in-out forwards;
         }
@@ -148,7 +146,6 @@
 
         .hidden { display: none !important; }
 
-        /* Partículas da tela final */
         .particle {
             position: absolute;
             user-select: none;
@@ -166,7 +163,7 @@
         </div>
 
         <div id="dynamic-content">
-            </div>
+        </div>
 
         <div id="success-screen" class="hidden">
             <div style="font-size: 60px; margin-bottom: 15px;">😍💍✨</div>
@@ -183,7 +180,6 @@
     </div>
 
     <script>
-        // Array com todas as telas (Fluxo de perguntas)
         const etapas = [
             {
                 passo: "",
@@ -238,9 +234,7 @@
         let etapaAtual = 0;
         const dynamicContent = document.getElementById('dynamic-content');
 
-        // Função para renderizar a tela atual
         function renderizarEtapa() {
-            // Se chegou no fim do array, mostra a tela de sucesso
             if (etapaAtual >= etapas.length) {
                 celebrar();
                 return;
@@ -248,10 +242,9 @@
 
             const etapa = etapas[etapaAtual];
             
-            // Remove a classe de animação e adiciona de novo para refazer o efeito fade
             const container = document.getElementById('surprise-container');
             container.classList.remove('fade-in');
-            void container.offsetWidth; // Trigger reflow para reiniciar a animação
+            void container.offsetWidth; 
             container.classList.add('fade-in');
 
             let htmlInjetado = '';
@@ -277,52 +270,42 @@
             dynamicContent.innerHTML = htmlInjetado;
         }
 
-        // Avança para a próxima pergunta
         function proximaEtapa() {
             etapaAtual++;
             renderizarEtapa();
         }
 
-        // Lógica do botão "Não" fugindo de forma segura (para não sumir)
         function fugir() {
             const btnNao = document.getElementById('btn-nao');
             
-            // Muda para fixed para flutuar pela tela inteira
             btnNao.style.position = 'fixed';
             
-            // Pega as dimensões da janela e do botão
             const larguraJanela = window.innerWidth;
             const alturaJanela = window.innerHeight;
             const larguraBtn = btnNao.offsetWidth;
             const alturaBtn = btnNao.offsetHeight;
             
-            // Calcula o limite máximo onde o botão pode ir sem sair da tela (com 20px de margem)
             const limiteX = larguraJanela - larguraBtn - 20;
             const limiteY = alturaJanela - alturaBtn - 20;
             
-            // Gera coordenadas aleatórias garantindo que não sejam negativas
             const novaPosicaoX = Math.max(20, Math.floor(Math.random() * limiteX));
             const novaPosicaoY = Math.max(20, Math.floor(Math.random() * limiteY));
             
-            // Aplica as novas coordenadas
             btnNao.style.left = novaPosicaoX + 'px';
             btnNao.style.top = novaPosicaoY + 'px';
         }
 
-        // Função final ao completar todas as etapas
         function celebrar() {
             dynamicContent.classList.add('hidden');
             document.getElementById('success-screen').classList.remove('hidden');
             iniciarParticulas();
         }
 
-        // Inicializa a primeira tela assim que a página carregar
         window.onload = renderizarEtapa;
 
-        // --- SISTEMA DE PARTÍCULAS (Corações e Confetes na tela final) ---
         function iniciarParticulas() {
             const interval = setInterval(criarParticula, 80);
-            setTimeout(() => clearInterval(interval), 6000); // Para de criar após 6 segundos
+            setTimeout(() => clearInterval(interval), 6000); 
         }
 
         function criarParticula() {
@@ -332,12 +315,10 @@
             const tipos = ['❤️', '💖', '✨', '💕', '🥰', '🎉'];
             particula.innerHTML = tipos[Math.floor(Math.random() * tipos.length)];
             
-            // Posição inicial no topo, espalhado horizontalmente
             particula.style.left = Math.random() * 100 + 'vw';
             particula.style.top = '-50px'; 
             particula.style.fontSize = Math.random() * 20 + 15 + 'px';
             
-            // Tempo de queda aleatório
             const duracao = Math.random() * 2 + 3;
             particula.style.transition = `top ${duracao}s linear, left ${duracao}s ease-in-out, transform ${duracao}s linear, opacity ${duracao}s ease-in`;
             
